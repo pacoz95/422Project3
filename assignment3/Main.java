@@ -3,6 +3,8 @@
  * Replace <...> with your actual data.  
  * Paul Cozzi  
  * pac2472  
+ * Alexander Doria
+ * aed2395
  * <Student1 5-digit Unique No.>  
  * <Student2 Name>  
  * <Student2 EID>  
