@@ -1,14 +1,11 @@
 /* WORD LADDER Main.java  
  * EE422C Project 3 submission by  
- * Replace <...> with your actual data.  
  * Paul Cozzi  
  * pac2472  
+ * 16450
  * Alexander Doria
  * aed2395
- * <Student1 5-digit Unique No.>  
- * <Student2 Name>  
- * <Student2 EID>  
- * <Student2 5-digit Unique No.>  
+ * 16450
  * Slip days used: <0>  
  * Git URL:  
  * Fall 2016  */
@@ -30,6 +27,7 @@ public class Main {
 			ps = System.out; // default to Stdout
 		} initialize();
 		// TODO methods to read in words, output ladder
+		getWordLadderBFS("String", "aring");
 		} 
 	
 	public static void initialize() {
