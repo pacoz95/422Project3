@@ -40,8 +40,10 @@ public class Main {
 	 * If command is /quit, return empty ArrayList.  
 	 */ 
 	public static ArrayList<String> parse(Scanner keyboard) {
-		// TO DO 
-		return null;
+		ArrayList<String> wordladder = new ArrayList<String>;
+		wordladder.add(keyboard.next());
+		wordladder.add(keyboard.next());
+		return wordladder;
 	} 
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end){
