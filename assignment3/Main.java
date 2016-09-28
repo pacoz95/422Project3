@@ -40,7 +40,7 @@ public class Main {
 	 * If command is /quit, return empty ArrayList.  
 	 */ 
 	public static ArrayList<String> parse(Scanner keyboard) {
-		ArrayList<String> wordladder = new ArrayList<String>;
+		ArrayList<String> wordladder = new ArrayList<String>();
 		wordladder.add(keyboard.next());
 		wordladder.add(keyboard.next());
 		return wordladder;
@@ -48,13 +48,49 @@ public class Main {
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end){
 		// Returned list should be ordered start to end.  Include start and end.
-		
-		// Return empty list if no ladder. // TODO some code Set<String> dict = makeDictionary(); // TODO more code
-		return null; // replace this line later with real return
+		ArrayList<String> ret = new ArrayList<String>();
+		// Base case, we're there
+		if(start.equals(end)){
+			ret.add(end);
+			return ret;
+		}
+		Set<String> dict = makeDictionary(); //this is pointless and bad
+		if(!dict.contains(start)){			//not even a word, bad case
+			return ret;
+		}
+		char[] optimal = end.toCharArray();
+		String testStr;
+		//first, try letter changes that bring you closer to the solution
+		for(int k = 0; k < start.length(); ++k){
+			if(optimal[k] == start.charAt(k)){
+				continue;
+			}
+			testStr = start.substring(0, k) + optimal[k] + start.substring(k+1);
+			ret = getWordLadderDFS(testStr, end);
+			if(ret != null){
+				ret.add(0,start);
+				return ret;
+			}
+		}
+		//try random letters because the ones that bring you closer to the solution failed
+		for(int j = 0; j < start.length(); ++j){
+			for(char k = 'A'; k <= 'Z'; ++k){
+				testStr = start.substring(0, j) + k + start.substring(j+1);
+				if(start.charAt(k) == k){
+					continue;
+				}
+				ret = getWordLadderDFS(testStr, end);
+				if(ret != null){
+					ret.add(start);
+					return ret;
+				}
+			}
+		}
+		// Return empty list if no ladder. 
+		return ret; // made it through all letters, no solution
 	}
     
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		// TODO some code 
 		Set<String> dict = makeDictionary(); // TODO more code
 		return null; // replace this line later with real return
 	}    
