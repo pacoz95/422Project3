@@ -63,58 +63,62 @@ public class Main {
 		wordladder.add(keyboard.next().toUpperCase());
 		return wordladder;
 	} 
+	static HashSet<String> visited1;
 	public static ArrayList<String> getWordLadderDFS(String start, String end){
 		start = start.toUpperCase();
 		end = end.toUpperCase();
-		HashSet<String> visited = new HashSet<String>();
-		return getWordLadderDFShelper(start, end, visited);
+		visited1 = new HashSet<String>();
+		return getWordLadderDFShelper(start, end, -1);
 	}
-	public static ArrayList<String> getWordLadderDFShelper(String start, String end, HashSet<String> visited){
+	private static ArrayList<String> getWordLadderDFShelper(String start, String end, int lastIndex){
 		// Returned list should be ordered start to end.  Include start and end.
 		
 		ArrayList<String> ret = new ArrayList<String>();
-		if(visited.contains(start)){
+		if(visited1.contains(start)){
 			return ret;
 		}
-		visited.add(start);					//now, we've visited start
+		visited1.add(start);					//now, we've visited start
 		// Base case, we're at the end
 		if(start.equals(end)){
 			ret.add(end);
 			return ret;
 		}
 		if(!dict.contains(start)){			//not even a word, bad case
-			visited.remove(start);
 			return ret;
 		}
 		char[] optimal = end.toCharArray();
 		String testStr;
 		//first, try letter changes that bring you closer to the solution
 		for(int k = 0; k < start.length(); ++k){
+			if(k == lastIndex){
+				continue;
+			}
 			testStr = start.substring(0, k) + optimal[k] + start.substring(k+1);
-			ret = getWordLadderDFShelper(testStr, end, visited);
-			if(ret != null){
+			ret = getWordLadderDFShelper(testStr, end, k);
+			if(ret.size() > 0){
 				ret.add(0,start);
 				return ret;
 			}
 		}
 		//try random letters because the ones that bring you closer to the solution failed
-		for(int j = 0; j < start.length(); ++j){
-			for(char k = 'A'; k <= 'Z'; ++k){
+		for(char k = 'A'; k <= 'Z'; ++k){
+			for(int j = 0; j < start.length(); ++j){
+				if(j == lastIndex){
+					continue;
+				}
 				testStr = start.substring(0, j) + k + start.substring(j+1);
-				ret = getWordLadderDFShelper(testStr, end, visited);
-				if(ret != null){
-					ret.add(start);
+				ret = getWordLadderDFShelper(testStr, end, j);
+				if(ret.size() > 0){
+					ret.add(0,start);
 					return ret;
 				}
 			}
 		}
 		// Return empty list if no ladder.
-		visited.remove(start);
 		return ret; // made it through all letters, no solution
 	}
     
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		// TODO more code
 		start = start.toUpperCase();
 		end = end.toUpperCase();
 		PriorityQueue<String> perms = new PriorityQueue<String>();
@@ -172,7 +176,7 @@ public class Main {
 	} 
 	public static void printLadder(ArrayList<String> ladder) {
 		for(int k = 0; k < ladder.size(); k++){
-			System.out.println(ladder.get(k));
+			System.out.println(ladder.get(k).toLowerCase());
 		}
 	}
 // TODO // Other private static methods here
