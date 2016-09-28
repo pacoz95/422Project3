@@ -14,7 +14,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	HashSet<String> visited = new HashSet<String>();
+	static HashSet<String> visited = new HashSet<String>();
 	static Set<String> dict = null;
 // static variables and constants only here. 
 	public static void main(String[] args) throws Exception {
@@ -98,15 +98,16 @@ public class Main {
 		PriorityQueue<String> perms = new PriorityQueue<String>();
 		ArrayList<String> wordLadder = new ArrayList<String>();
 		String strStrg = start;
-		while(!perms.isEmpty()){
+		wordLadder.add(start);
+		visited.add(start);
+		while(true){
 			for(int i = 1; i < start.length(); i++){ // checks permutations of start with end letters
 				for(int j = 0; i < end.length(); j++){
 					String bfsTry = end.substring(j, j + 1) + strStrg.substring(i);
 					if(dict.contains(bfsTry) == true){
-						if(bfsTry.equals(end) == true){
-							
-						}
+						if(!visited.contains(bfsTry)){
 						perms.add(bfsTry);
+						}
 					}
 				}
 			}
@@ -114,18 +115,24 @@ public class Main {
 				for(char lt = 'A'; lt < 'Z'; lt++){
 					String bfsRandTry = lt + strStrg.substring(k);
 					if(dict.contains(bfsRandTry) == true){
-						if(bfsRandTry.equals(end) == true){
-							
-						}
+						if(!visited.contains(bfsRandTry))
 						perms.add(bfsRandTry);
 						
 					}
 				}
 			}
+			if(strStrg.equals(end)){
+				wordLadder.add(end);
+				return wordLadder;
+			}
+			if(perms.isEmpty()){
+				return wordLadder;
+			}
 			strStrg = perms.remove();
+			visited.add(strStrg);
+			wordLadder.add(strStrg);
 			
-		} 
-	return null;// replace this line later with real return
+		} // replace this line later with real return
 }
 	public static Set<String>  makeDictionary () { 
 		Set<String> words = new HashSet<String>();
