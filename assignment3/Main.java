@@ -7,7 +7,7 @@
  * aed2395
  * 16450
  * Slip days used: <0>  
- * Git URL:  
+ * Git URL:  https://github.com/pacoz95/422Project3
  * Fall 2016  */
 package assignment3;
 import java.util.*; 
