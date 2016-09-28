@@ -19,7 +19,7 @@ public class Main {
 // static variables and constants only here. 
 	public static void main(String[] args) throws Exception {
 		Scanner kb; // input Scanner for commands
-		PrintStream ps; // output file // If arguments are specified, read/write from/to files instead of Std IO.
+		//PrintStream ps; // output file // If arguments are specified, read/write from/to files instead of Std IO.
 		if (args.length != 0) {
 			kb = new Scanner(new File(args[0]));
 		//	ps = new PrintStream(new File(args[1]));
