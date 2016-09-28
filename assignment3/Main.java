@@ -122,9 +122,9 @@ public class Main {
 				for(char lt = 'A'; lt < 'Z'; lt++){
 					String bfsRandTry = lt + strStrg.substring(k);
 					if(dict.contains(bfsRandTry) == true){
-						if(!visited.contains(bfsRandTry))
-						perms.add(bfsRandTry);
-						
+						if(!visited.contains(bfsRandTry)){
+							perms.add(bfsRandTry);
+						}
 					}
 				}
 			}
