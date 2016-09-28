@@ -22,14 +22,24 @@ public class Main {
 		PrintStream ps; // output file // If arguments are specified, read/write from/to files instead of Std IO.
 		if (args.length != 0) {
 			kb = new Scanner(new File(args[0]));
-			ps = new PrintStream(new File(args[1]));
-			System.setOut(ps); // redirect output to ps
+		//	ps = new PrintStream(new File(args[1]));
+		//	System.setOut(ps); // redirect output to ps
 		} else {
 			kb = new Scanner(System.in);// default from Stdin 
-			ps = System.out; // default to Stdout
-		} initialize();
+		//	ps = System.out; // default to Stdout
+		} 
+		initialize();
 		// TODO methods to read in words, output ladder
-		getWordLadderBFS("String", "aring");
+		ArrayList<String> arguments;
+		arguments = parse(kb);
+		if(arguments.size() == 0){
+			return;
+		}
+		else 
+			arguments = getWordLadderDFS(arguments.get(0),arguments.get(1));
+		printLadder(arguments);
+		
+		//getWordLadderBFS("String", "aring");
 		} 
 	
 	public static void initialize() {
@@ -48,11 +58,14 @@ public class Main {
 		if(str.equals("/quit")){
 			return wordladder;
 		}
-		wordladder.add(str);
-		wordladder.add(keyboard.next());
+		
+		wordladder.add(str.toUpperCase());
+		wordladder.add(keyboard.next().toUpperCase());
 		return wordladder;
 	} 
 	public static ArrayList<String> getWordLadderDFS(String start, String end){
+		start = start.toUpperCase();
+		end = end.toUpperCase();
 		HashSet<String> visited = new HashSet<String>();
 		return getWordLadderDFShelper(start, end, visited);
 	}
@@ -102,6 +115,8 @@ public class Main {
     
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		// TODO more code
+		start = start.toUpperCase();
+		end = end.toUpperCase();
 		PriorityQueue<String> perms = new PriorityQueue<String>();
 		ArrayList<String> wordLadder = new ArrayList<String>();
 		String strStrg = start;
@@ -109,7 +124,7 @@ public class Main {
 		visited.add(start);
 		while(true){
 			for(int i = 1; i < start.length(); i++){ // checks permutations of start with end letters
-				for(int j = 0; i < end.length(); j++){
+				for(int j = 0; j < end.length(); j++){
 					String bfsTry = end.substring(j, j + 1) + strStrg.substring(i);
 					if(dict.contains(bfsTry) == true){
 						if(!visited.contains(bfsTry)){
@@ -119,7 +134,7 @@ public class Main {
 				}
 			}
 			for(int k = 1; k < start.length(); k++){
-				for(char lt = 'A'; lt < 'Z'; lt++){
+				for(char lt = 'A'; lt <= 'Z'; lt++){
 					String bfsRandTry = lt + strStrg.substring(k);
 					if(dict.contains(bfsRandTry) == true){
 						if(!visited.contains(bfsRandTry)){
