@@ -72,9 +72,10 @@ public class Main {
 		} 
 		return words;
 	} 
-
-	public static void printLadder(ArrayList<String> ladder) { 
-	
+	public static void printLadder(ArrayList<String> ladder) {
+		for(int k = 0; k < ladder.size(); k++){
+			System.out.println(ladder.get(k));
+		}
 	}
 // TODO // Other private static methods here
 }
