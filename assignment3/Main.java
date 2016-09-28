@@ -14,6 +14,8 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+	HashSet<String> visited = new HashSet<String>();
+	static Set<String> dict = null;
 // static variables and constants only here. 
 	public static void main(String[] args) throws Exception {
 		Scanner kb; // input Scanner for commands
@@ -33,6 +35,7 @@ public class Main {
 	public static void initialize() {
 		// initialize your static variables or constants here. // We will call this method before running our JUNIT tests.  So call it
 		// only once at the start of main.
+		dict = makeDictionary();
 	}
 	/**  
 	 * @param keyboard Scanner connected to System.in  
@@ -40,7 +43,7 @@ public class Main {
 	 * If command is /quit, return empty ArrayList.  
 	 */ 
 	public static ArrayList<String> parse(Scanner keyboard) {
-		ArrayList<String> wordladder = new ArrayList<String>;
+		ArrayList<String> wordladder = new ArrayList<String>();
 		wordladder.add(keyboard.next());
 		wordladder.add(keyboard.next());
 		return wordladder;
@@ -54,10 +57,39 @@ public class Main {
 	}
     
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		// TODO some code 
-		Set<String> dict = makeDictionary(); // TODO more code
-		return null; // replace this line later with real return
-	}    
+		// TODO more code
+		PriorityQueue<String> perms = new PriorityQueue<String>();
+		ArrayList<String> wordLadder = new ArrayList<String>();
+		String strStrg = start;
+		while(!perms.isEmpty()){
+			for(int i = 1; i < start.length(); i++){ // checks permutations of start with end letters
+				for(int j = 0; i < end.length(); j++){
+					String bfsTry = end.substring(j, j + 1) + strStrg.substring(i);
+					if(dict.contains(bfsTry) == true){
+						if(bfsTry.equals(end) == true){
+							
+						}
+						perms.add(bfsTry);
+					}
+				}
+			}
+			for(int k = 1; k < start.length(); k++){
+				for(char lt = 'A'; lt < 'Z'; lt++){
+					String bfsRandTry = lt + strStrg.substring(k);
+					if(dict.contains(bfsRandTry) == true){
+						if(bfsRandTry.equals(end) == true){
+							
+						}
+						perms.add(bfsRandTry);
+						
+					}
+				}
+			}
+			strStrg = perms.remove();
+			
+		} 
+	return null;// replace this line later with real return
+}
 	public static Set<String>  makeDictionary () { 
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null; 
