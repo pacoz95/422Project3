@@ -36,14 +36,15 @@ public class Main {
 			return;
 		}
 		else 
-			arguments = getWordLadderDFS(arguments.get(0),arguments.get(1));
+			arguments = getWordLadderBFS(arguments.get(0),arguments.get(1));
 		printLadder(arguments);
 		
 		//getWordLadderBFS("String", "aring");
 		} 
 	
+	
 	public static void initialize() {
-		// initialize your static variables or constants here. // We will call this method before running our JUNIT tests.  So call it
+	// initialize your static variables or constants here. // We will call this method before running our JUNIT tests.  So call it
 		// only once at the start of main.
 		dict = makeDictionary();
 	}
@@ -121,34 +122,33 @@ public class Main {
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		start = start.toUpperCase();
 		end = end.toUpperCase();
-		PriorityQueue<String> perms = new PriorityQueue<String>();
+		ArrayDeque<String> perms = new ArrayDeque<String>();
 		ArrayList<String> wordLadder = new ArrayList<String>();
 		String strStrg = start;
 		wordLadder.add(start);
 		visited.add(start);
 		while(true){
-			for(int i = 1; i < start.length(); i++){ // checks permutations of start with end letters
-				for(int j = 0; j < end.length(); j++){
-					String bfsTry = end.substring(j, j + 1) + strStrg.substring(i);
+			if(!strStrg.equals(end)){
+				for(int i = 1; i < start.length(); i++){ // checks permutations of start with end letters
+					String bfsTry = strStrg.substring(0, i) + end.charAt(i) + strStrg.substring(i+1);
 					if(dict.contains(bfsTry) == true){
 						if(!visited.contains(bfsTry)){
 						perms.add(bfsTry);
 						}
 					}
 				}
-			}
-			for(int k = 1; k < start.length(); k++){
-				for(char lt = 'A'; lt <= 'Z'; lt++){
-					String bfsRandTry = lt + strStrg.substring(k);
-					if(dict.contains(bfsRandTry) == true){
-						if(!visited.contains(bfsRandTry)){
-							perms.add(bfsRandTry);
+				for(int k = 1; k < start.length(); k++){
+					for(char lt = 'A'; lt <= 'Z'; lt++){
+						String bfsRandTry = lt + strStrg.substring(k);
+						if(dict.contains(bfsRandTry) == true){
+							if(!visited.contains(bfsRandTry)){
+								perms.add(bfsRandTry);
+							}
 						}
 					}
 				}
-			}
+			}	
 			if(strStrg.equals(end)){
-				wordLadder.add(end);
 				return wordLadder;
 			}
 			if(perms.isEmpty()){
