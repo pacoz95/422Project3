@@ -17,6 +17,9 @@ public class Main {
 	static HashSet<String> visited = new HashSet<String>();
 	static Set<String> dict = null;
 // static variables and constants only here. 
+	/**
+	 * Class that contains String that has the word and parent that has what the word branched from.
+	 */
 	private static class WordNode {
 		String word = null;
 		WordNode parent = null;
@@ -160,7 +163,12 @@ public class Main {
 		// Return empty list if no ladder.
 		return ret; // made it through all letters, no solution
 	}
-    
+    /**
+     * Finds if there is a word ladder between two words and returns the wordladder.
+     * @param start string that contains the start word of the word ladder
+     * @param end string that contains the end word of the word ladder
+     * @return ArrayList<String> contains word ladder.
+     */
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		start = start.toUpperCase();
 		end = end.toUpperCase();
@@ -206,6 +214,13 @@ public class Main {
 			
 		} // replace this line later with real return
 }
+	/**
+	 * Returns an ArrayList<String> that contains the word ladder.
+	 * @param nodeWord NodeWord that contains the last word in the word ladder.
+	 * @param wordLadder ArrayList<String> will contain the wordladder.
+	 * @param start String contains start word
+	 * @return ArrayList<String> that contains the word ladder.
+	 */
 	public static ArrayList<String> makeWordLadder(WordNode nodeWord, ArrayList<String> wordLadder, String start){
 		while(nodeWord.parent != null){
 			wordLadder.add(nodeWord.word);
