@@ -29,17 +29,28 @@ public class Main {
 		//	ps = System.out; // default to Stdout
 		} 
 		initialize();
-		// TODO methods to read in words, output ladder
+		//parse for input
 		ArrayList<String> arguments;
+		ArrayList<String> result;
 		arguments = parse(kb);
 		if(arguments.size() == 0){
 			return;
 		}
-		else 
-			arguments = getWordLadderDFS(arguments.get(0),arguments.get(1));
-		printLadder(arguments);
+		//print result
+		else{
+			result = getWordLadderDFS(arguments.get(0),arguments.get(1));
+		}
+		//print the results
+		if(result.size() < 2){
+			System.out.println("no word ladder can be found between " + 
+								arguments.get(0).toLowerCase() + " and " + arguments.get(1).toLowerCase() + ".");
+		}
+		else{
+			System.out.println("a " + (result.size() - 2) + "-rung ladder exists between " +
+								arguments.get(0).toLowerCase() + " and " + arguments.get(1).toLowerCase() + ".");
+			printLadder(result);
+		}
 		
-		//getWordLadderBFS("String", "aring");
 		} 
 	
 	public static void initialize() {
@@ -56,7 +67,7 @@ public class Main {
 		ArrayList<String> wordladder = new ArrayList<String>();
 		String str = keyboard.next();
 		if(str.equals("/quit")){
-			return wordladder;
+			System.exit(0);
 		}
 		
 		wordladder.add(str.toUpperCase());
@@ -67,8 +78,19 @@ public class Main {
 	public static ArrayList<String> getWordLadderDFS(String start, String end){
 		start = start.toUpperCase();
 		end = end.toUpperCase();
+		ArrayList<String> ladder = new ArrayList<String>();
+		//even though DFS is very optimized, it still stack overflows in special cases
+		try{
+			visited1 = new HashSet<String>();
+			ladder = getWordLadderDFShelper(start, end, -1);
+		}
+		catch(StackOverflowError e){
+			visited1 = new HashSet<String>();
+			ladder = getWordLadderDFShelper(end, start, -1);
+			Collections.reverse(ladder);
+		}
 		visited1 = new HashSet<String>();
-		return getWordLadderDFShelper(start, end, -1);
+		return ladder;
 	}
 	private static ArrayList<String> getWordLadderDFShelper(String start, String end, int lastIndex){
 		// Returned list should be ordered start to end.  Include start and end.
