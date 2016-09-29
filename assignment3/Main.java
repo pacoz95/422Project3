@@ -189,7 +189,7 @@ public class Main {
 						}
 					}
 				}
-				for(int k = 0; k < start.length(); k++){
+				for(int k = 0; k < start.length(); k++){// checks permutaions using all letters of the dictionary
 					for(char lt = 'A'; lt <= 'Z'; lt++){
 						String bfsRandTry = current.word.substring(0, k) + lt + current.word.substring(k+1 );
 						if(dict.contains(bfsRandTry) == true){
@@ -203,14 +203,14 @@ public class Main {
 					}
 				}
 			}	
-			if(current.word.equals(end)){
+			if(current.word.equals(end)){ //checks if the current word is end
 				wordLadder = makeWordLadder(current, wordLadder, start);
 				return wordLadder;
 			}
-			if(perms.isEmpty()){
+			if(perms.isEmpty()){ // checks if the queue is empty
 				return wordLadder;
 			}
-			current = perms.remove();;
+			current = perms.remove(); //sets the next word as current from the queue
 			
 		} // replace this line later with real return
 }
