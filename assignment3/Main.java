@@ -10,13 +10,25 @@
  * Git URL:  https://github.com/pacoz95/422Project3
  * Fall 2016  */
 package assignment3;
-import java.util.*; 
+import java.util.*;
 import java.io.*;
 
 public class Main {
 	static HashSet<String> visited = new HashSet<String>();
 	static Set<String> dict = null;
 // static variables and constants only here. 
+	private static class WordNode {
+		String word = null;
+		WordNode parent = null;
+		
+		public WordNode(String word){
+			this.word = word;
+		}
+		public WordNode(String word, WordNode parent){
+			this.word = word;
+			this.parent = parent;
+		}
+	}
 	public static void main(String[] args) throws Exception {
 		Scanner kb; // input Scanner for commands
 		//PrintStream ps; // output file // If arguments are specified, read/write from/to files instead of Std IO.
@@ -38,7 +50,7 @@ public class Main {
 		}
 		//print result
 		else{
-			result = getWordLadderDFS(arguments.get(0),arguments.get(1));
+			result = getWordLadderBFS(arguments.get(0),arguments.get(1));
 		}
 		//print the results
 		if(result.size() < 2){
@@ -143,44 +155,57 @@ public class Main {
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		start = start.toUpperCase();
 		end = end.toUpperCase();
-		ArrayDeque<String> perms = new ArrayDeque<String>();
+		ArrayDeque<WordNode> perms = new ArrayDeque<WordNode>();
 		ArrayList<String> wordLadder = new ArrayList<String>();
-		String strStrg = start;
-		wordLadder.add(start);
 		visited.add(start);
+		WordNode sword = new WordNode(start);
+		WordNode current = sword;
 		while(true){
-			if(!strStrg.equals(end)){
-				for(int i = 1; i < start.length(); i++){ // checks permutations of start with end letters
-					String bfsTry = strStrg.substring(0, i) + end.charAt(i) + strStrg.substring(i+1);
+			if(!current.word.equals(end)){
+				for(int i = 0; i < start.length(); i++){ // checks permutations of start with end letters
+					String bfsTry = current.word.substring(0, i) + end.charAt(i) + current.word.substring(i+1);
 					if(dict.contains(bfsTry) == true){
 						if(!visited.contains(bfsTry)){
-						perms.add(bfsTry);
+						WordNode word = new WordNode(bfsTry, current);
+						perms.add(word);
+						visited.add(current.word);
 						}
 					}
 				}
-				for(int k = 1; k < start.length(); k++){
+				for(int k = 0; k < start.length(); k++){
 					for(char lt = 'A'; lt <= 'Z'; lt++){
-						String bfsRandTry = lt + strStrg.substring(k);
+						String bfsRandTry = current.word.substring(0, k) + lt + current.word.substring(k+1 );
 						if(dict.contains(bfsRandTry) == true){
 							if(!visited.contains(bfsRandTry)){
-								perms.add(bfsRandTry);
+								WordNode word = new WordNode(bfsRandTry, current);
+								perms.add(word);
+								visited.add(current.word);
+								
 							}
 						}
 					}
 				}
 			}	
-			if(strStrg.equals(end)){
+			if(current.word.equals(end)){
+				wordLadder = makeWordLadder(current, wordLadder, start);
 				return wordLadder;
 			}
 			if(perms.isEmpty()){
 				return wordLadder;
 			}
-			strStrg = perms.remove();
-			visited.add(strStrg);
-			wordLadder.add(strStrg);
+			current = perms.remove();;
 			
 		} // replace this line later with real return
 }
+	public static ArrayList<String> makeWordLadder(WordNode nodeWord, ArrayList<String> wordLadder, String start){
+		while(nodeWord.parent != null){
+			wordLadder.add(nodeWord.word);
+			nodeWord = nodeWord.parent;
+		}
+		wordLadder.add(start);
+		Collections.reverse(wordLadder);
+		return wordLadder;
+	}
 	public static Set<String>  makeDictionary () { 
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null; 
