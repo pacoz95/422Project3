@@ -19,15 +19,7 @@ public class Main {
 // static variables and constants only here. 
 	public static void main(String[] args) throws Exception {
 		Scanner kb; // input Scanner for commands
-		//PrintStream ps; // output file // If arguments are specified, read/write from/to files instead of Std IO.
-		if (args.length != 0) {
-			kb = new Scanner(new File(args[0]));
-		//	ps = new PrintStream(new File(args[1]));
-		//	System.setOut(ps); // redirect output to ps
-		} else {
-			kb = new Scanner(System.in);// default from Stdin 
-		//	ps = System.out; // default to Stdout
-		} 
+		kb = new Scanner(System.in);// default from Stdin 
 		initialize();
 		//parse for input
 		ArrayList<String> arguments;
@@ -38,7 +30,7 @@ public class Main {
 		}
 		//print result
 		else{
-			result = getWordLadderDFS(arguments.get(0),arguments.get(1));
+			result = getWordLadderBFS(arguments.get(0),arguments.get(1));
 		}
 		//print the results
 		if(result.size() < 2){
@@ -52,10 +44,15 @@ public class Main {
 		}
 	}
 	
-	
+	/**
+	 * initializes the dictionary for calls
+	 * @param none
+	 * @return none
+	 */
 	public static void initialize() {
-	// initialize your static variables or constants here. // We will call this method before running our JUNIT tests.  So call it
-		// only once at the start of main.
+	// initialize your static variables or constants here. 
+	// We will call this method before running our JUNIT tests.  So call it
+	// only once at the start of main.
 		dict = makeDictionary();
 	}
 	/**  
@@ -74,32 +71,44 @@ public class Main {
 		wordladder.add(keyboard.next().toUpperCase());
 		return wordladder;
 	} 
-	static HashSet<String> visited1;
+	/**
+	 * Uses depth first search to find any word ladder
+	 * @param start a String, the start word
+	 * @param end, a String, the end word
+	 * @return The populated word ladder, including the start and end, empty if no word ladder
+	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end){
 		start = start.toUpperCase();
 		end = end.toUpperCase();
 		ArrayList<String> ladder = new ArrayList<String>();
 		//even though DFS is very optimized, it still stack overflows in special cases
 		try{
-			visited1 = new HashSet<String>();
+			visited.clear();
 			ladder = getWordLadderDFShelper(start, end, -1);
-		}
-		catch(StackOverflowError e){
-			visited1 = new HashSet<String>();
-			ladder = getWordLadderDFShelper(end, start, -1);
 			Collections.reverse(ladder);
 		}
-		visited1 = new HashSet<String>();
+		catch(StackOverflowError e){
+			visited.clear();
+			ladder = getWordLadderDFShelper(end, start, -1);
+		}
+		visited = new HashSet<String>(); //cleanup
 		return ladder;
 	}
+	/**
+	 * Helper function for DFS
+	 * @param start - a String - the start string
+	 * @param end - a String - the end string
+	 * @param lastIndex - the last index of a word that was changed, will be skipped
+	 * @return ArrayList<String> with word ladder, or empty if no word ladder
+	 */
 	private static ArrayList<String> getWordLadderDFShelper(String start, String end, int lastIndex){
 		// Returned list should be ordered start to end.  Include start and end.
 		
 		ArrayList<String> ret = new ArrayList<String>();
-		if(visited1.contains(start)){
+		if(visited.contains(start)){
 			return ret;
 		}
-		visited1.add(start);					//now, we've visited start
+		visited.add(start);					//now, we've visited start
 		// Base case, we're at the end
 		if(start.equals(end)){
 			ret.add(end);
@@ -118,7 +127,7 @@ public class Main {
 			testStr = start.substring(0, k) + optimal[k] + start.substring(k+1);
 			ret = getWordLadderDFShelper(testStr, end, k);
 			if(ret.size() > 0){
-				ret.add(0,start);
+				ret.add(start);
 				return ret;
 			}
 		}
@@ -131,7 +140,7 @@ public class Main {
 				testStr = start.substring(0, j) + k + start.substring(j+1);
 				ret = getWordLadderDFShelper(testStr, end, j);
 				if(ret.size() > 0){
-					ret.add(0,start);
+					ret.add(start);
 					return ret;
 				}
 			}
@@ -180,7 +189,11 @@ public class Main {
 			wordLadder.add(strStrg);
 			
 		} // replace this line later with real return
-}
+	}
+	/**
+	 * Pulls dictionary from file
+	 * @return a HashSet<String> containing all words in the dictionary
+	 */
 	public static Set<String>  makeDictionary () { 
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null; 
@@ -200,5 +213,4 @@ public class Main {
 			System.out.println(ladder.get(k).toLowerCase());
 		}
 	}
-// TODO // Other private static methods here
 }
