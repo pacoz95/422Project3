@@ -106,7 +106,7 @@ public class Main {
 			visited.clear();
 			ladder = getWordLadderDFShelper(end, start, -1);
 		}
-		visited = new HashSet<String>(); //cleanup
+		visited.clear(); //cleanup
 		return ladder;
 	}
 	/**
@@ -248,6 +248,12 @@ public class Main {
 		} 
 		return words;
 	} 
+	
+	/**
+	 * Prints a word ladder
+	 * will print nothing if passed an empty ladder
+	 * @param ladder to print
+	 */
 	public static void printLadder(ArrayList<String> ladder) {
 		for(int k = 0; k < ladder.size(); k++){
 			System.out.println(ladder.get(k).toLowerCase());
